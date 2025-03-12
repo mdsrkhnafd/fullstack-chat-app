@@ -22,7 +22,8 @@ app.use(cookieParser());
 
 const allowedOrigins = [
   "http://localhost:5173", // Without trailing slash
-  "http://localhost:5001", // If your backend calls itself
+  // "http://localhost:5001", // If your backend calls itself
+  "https://fullstack-chat-app-production-6a89.up.railway.app", // Production frontend URL
 ];
 
 // Apply CORS middleware
