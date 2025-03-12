@@ -6,9 +6,7 @@ import { connectDB } from "./lib/db.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { app, server } from "./lib/socket.js";
-
 import path from "path";
-import { log } from "console";
 
 dotenv.config();
 
@@ -21,6 +19,7 @@ console.log(process.env.NODE_ENV);
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" })); // For form data
 app.use(cookieParser());
+
 const allowedOrigins = [
   "http://localhost:5173", // Without trailing slash
   "http://localhost:5001", // If your backend calls itself
@@ -45,13 +44,16 @@ app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/build")));
+  // Serve static files from dist folder (instead of build folder)
+  app.use(express.static(path.join(__dirname, "../frontend", "dist"))); // Correct path to dist
 
+  // Handle all other routes to serve the React index.html
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
   });
 }
 
+// Log the path for debugging
 console.log(path.join(__dirname, "../frontend", "dist", "index.html"));
 console.log(process.env.NODE_ENV === "production");
 
