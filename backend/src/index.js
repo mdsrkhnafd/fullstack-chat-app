@@ -8,11 +8,14 @@ import cors from "cors";
 import { app, server } from "./lib/socket.js";
 
 import path from "path";
+import { log } from "console";
 
 dotenv.config();
 
 const PORT = process.env.PORT || 5001;
 const __dirname = path.resolve();
+
+console.log(process.env.NODE_ENV);
 
 // 🔹 Ensure Express can parse JSON (Base64 images)
 app.use(express.json({ limit: "10mb" }));
@@ -48,6 +51,9 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
   });
 }
+
+console.log(path.join(__dirname, "../frontend", "dist", "index.html"));
+console.log(process.env.NODE_ENV === "production");
 
 // server
 server.listen(PORT, () => {
